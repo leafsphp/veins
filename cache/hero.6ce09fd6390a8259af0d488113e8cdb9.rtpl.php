@@ -1,4 +1,4 @@
-<?php if(!class_exists('Leaf\Veins')){exit;}?><!DOCTYPE html>
+<?php if(!class_exists('Veins\Template')){exit;}?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">

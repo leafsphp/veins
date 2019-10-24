@@ -23,14 +23,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+namespace Veins\Template;
 
 /**
  *  LeafVeins
  *  --------
- *  Realized by Federico Ulfo & maintained by the Rain Team
- *
- *  @version 3.0 Alpha milestone: https://github.com/rainphp/raintpl3/issues/milestones?with_issues=no
+ *  Official Templating Engine for LeafPHP framework
  */
 class Parser {
 
@@ -44,7 +42,7 @@ class Parser {
     /**
      * Plugin container
      *
-     * @var \Leaf\Veins\PluginContainer
+     * @var \Veins\Template\PluginContainer
      */
     protected static $plugins = null;
 
@@ -111,7 +109,7 @@ class Parser {
     /**
      * Returns plugin container.
      *
-     * @return \Leaf\Veins\PluginContainer
+     * @return \Veins\Template\PluginContainer
      */
     protected static function getPlugins() {
         return static::$plugins
@@ -160,7 +158,7 @@ class Parser {
                 }, $code);
 
             $parsedCode = $this->compileTemplate($code, $isString = false, $templateBasedir, $templateDirectory, $templateFilepath);
-            $parsedCode = "<?php if(!class_exists('Leaf\Veins')){exit;}?>" . $parsedCode;
+            $parsedCode = "<?php if(!class_exists('Veins\Template')){exit;}?>" . $parsedCode;
 
             // fix the php-eating-newline-after-closing-tag-problem
             $parsedCode = str_replace("?>\n", "?>\n\n", $parsedCode);
@@ -215,7 +213,7 @@ class Parser {
 
             $parsedCode = $this->compileTemplate($code, $isString = true, $templateBasedir, $templateDirectory = null, $templateFilepath);
 
-            $parsedCode = "<?php if(!class_exists('Leaf\Veins')){exit;}?>" . $parsedCode;
+            $parsedCode = "<?php if(!class_exists('Veins\Template')){exit;}?>" . $parsedCode;
 
             // fix the php-eating-newline-after-closing-tag-problem
             $parsedCode = str_replace("?>\n", "?>\n\n", $parsedCode);

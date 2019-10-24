@@ -23,31 +23,34 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+if(!defined("BASE_DIR"))
+    define("BASE_DIR", dirname(dirname(__DIR__)));
 
-/**
- * Basic Rain tpl exception.
- */
-class Exception extends \Exception {
+// register the autoloader
+spl_autoload_register( "VeinsAutoloader" );
 
-    /**
-     * Path of template file with error.
-     */
-    protected $templateFile = '';
 
-    /**
-     * Handles path of template file with error.
-     *
-     * @param string | null $templateFile
-     * @return \Leaf\Veins_Exception | string
-     */
-    public function templateFile($templateFile){
-        if(is_null($templateFile))
-            return $this->templateFile;
+// autoloader
+function VeinsAutoloader($class){
 
-        $this->templateFile = (string) $templateFile;
-        return $this;
+    // it only autoload class into the Veins scope
+    if (strpos($class,'Veins\\Template') !== false){
+        // transform the namespace in path
+        $path = str_replace("\\", DIRECTORY_SEPARATOR, $class );
+
+        // filepath
+        $abs_path = BASE_DIR . "/library/" . $path . ".php";
+
+        if (!file_exists($abs_path)) {
+            echo "<br>";
+            echo $path;
+            echo "<br>";
+            echo $abs_path;
+            echo "<br><br>";
+        }
+
+        // require the file
+        require_once $abs_path;
     }
-}
 
-// -- end
+}

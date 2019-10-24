@@ -23,11 +23,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins\Plugin;
+namespace Veins\Template\Plugin;
 
 require_once __DIR__ . '/../Plugin.php';
 
-class Compress extends \Leaf\Veins\Plugin {
+class Compress extends \Veins\Template\Plugin {
 
     protected $hooks = array('afterDraw'),
               $cache_dir, 
@@ -162,7 +162,7 @@ class Compress extends \Leaf\Veins\Plugin {
                     // minify the CSS
                     $stylesheetFile = preg_replace("/\n|\r|\t|\s{4}/", "", $stylesheetFile);
 
-                    $css .= "/*---\n CSS compressed in Rain \n {$url} \n---*/\n\n" . $stylesheetFile . "\n";
+                    $css .= "/*---\n CSS compressed in Veins \n {$url} \n---*/\n\n" . $stylesheetFile . "\n";
                 }
             }
 
@@ -222,7 +222,7 @@ class Compress extends \Leaf\Veins\Plugin {
                     $urlArray[$url] = $url;
 
                     // reduce the path
-                    $url = \Leaf\Veins\Parser::reducePath( $url );
+                    $url = \Veins\Template\Parser::reducePath( $url );
 
                     $javascriptFile = file_get_contents($url);
 
@@ -230,7 +230,7 @@ class Compress extends \Leaf\Veins\Plugin {
                     $javascriptFile = preg_replace("#/\*.*?\*/#", "", $javascriptFile);
                     $javascriptFile = preg_replace("#\n+|\t+| +#", " ", $javascriptFile);
 
-                    $javascript .= "/*---\n Javascript compressed in Rain \n {$url} \n---*/\n\n" . $javascriptFile . "\n\n";
+                    $javascript .= "/*---\n Javascript compressed in Veins \n {$url} \n---*/\n\n" . $javascriptFile . "\n\n";
                     
                 }
             }

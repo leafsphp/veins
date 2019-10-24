@@ -23,10 +23,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins\Plugin;
+namespace Veins\Template\Plugin;
 require_once __DIR__ . '/../Plugin.php';
 
-class PathReplace extends \Leaf\Veins\Plugin {
+class PathReplace extends \Veins\Template\Plugin {
     protected $hooks = array('afterParse');
     private $tags = array('a', 'img', 'link', 'script', 'form', 'input', 'object', 'embed');
 

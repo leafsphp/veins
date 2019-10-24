@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+namespace Veins\Template;
 
 /**
  * Interface for a plugin classes for rain template engine.

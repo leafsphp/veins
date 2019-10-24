@@ -1,11 +1,11 @@
 <?php
 
 // include
-require "library/Leaf/autoload.php";
+require "library/Veins/autoload.php";
 
 // namespace
-use Leaf\Veins;
-$veins = new Veins;
+use Veins\Template;
+$veins = new Template;
 
 
 // configure
@@ -18,7 +18,7 @@ $config = array(
 $veins->configure($config);
 
 // Add PathReplace plugin
-$veins->registerPlugin(new Veins\Plugin\PathReplace());
+$veins->registerPlugin(new Template\Plugin\PathReplace());
 
 
 
@@ -33,12 +33,12 @@ $var = array(
         array("name" => "Documentation", "link" => "index.php/doc/", "selected" => null )
     ),
     "week"		=> array( "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ),
-    "user"		=> (object) array("name"=>"Rain", "citizen" => "Earth", "race" => "Human" ),
+    "user"		=> (object) array("name"=>"Veins", "citizen" => "Earth", "race" => "Human" ),
     "numbers"	=> array( 3, 2, 1 ),
     "bad_text"	=> 'Hey this is a malicious XSS <script>alert(1);</script>',
     "table"		=> array( array( "Apple", "1996" ), array( "PC", "1997" ) ),
     "title"		=> "Mychi Bootstrap",
-    "copyright" => "Copyright 2006 - 2012 Rain TPL<br>Project By Rain Team",
+    "copyright" => "Copyright 2006 - 2012 Veins TPL<br>Project By Veins Team",
 );
 
 // add a function

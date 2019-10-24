@@ -23,14 +23,31 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+namespace Veins\Template;
 
 /**
- * Exception thrown when template file does not exists.
+ * Basic Veins template exception.
  */
-class NotFoundException extends Exception {
+class Exception extends \Exception {
 
+    /**
+     * Path of template file with error.
+     */
+    protected $templateFile = '';
+
+    /**
+     * Handles path of template file with error.
+     *
+     * @param string | null $templateFile
+     * @return \Veins\Template_Exception | string
+     */
+    public function templateFile($templateFile){
+        if(is_null($templateFile))
+            return $this->templateFile;
+
+        $this->templateFile = (string) $templateFile;
+        return $this;
+    }
 }
-
 
 // -- end

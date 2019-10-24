@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+namespace Veins\Template;
 
 /**
  * Exception thrown when syntax error occurs.
@@ -50,7 +50,7 @@ class SyntaxException extends Exception {
      *
      * @param int | null $line
      *
-     * @return \Leaf\Veins\SyntaxException | int | null
+     * @return \Veins\Template\SyntaxException | int | null
      */
     public function templateLine($line){
         if(is_null($line))
@@ -65,7 +65,7 @@ class SyntaxException extends Exception {
      *
      * @param string | null $tag
      *
-     * @return \Leaf\Veins_SyntaxException | string | null
+     * @return \Veins\Template_SyntaxException | string | null
      */
     public function tag($tag=null){
         if(is_null($tag))

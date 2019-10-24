@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf\Veins;
+namespace Veins\Template;
 
 /**
  * Maintains template plugins and call hook methods.

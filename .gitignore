@@ -1,0 +1,6 @@
+.DS_Store
+nbproject
+vendor/*
+cache/*
+views
+veins.php

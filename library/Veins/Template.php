@@ -23,14 +23,14 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Leaf;
+namespace Veins;
 
 /**
  *  LeafVeins
  *  --------
  *  Official Templating Engine for LeafPHP framework
  */
-class Veins {
+class Template {
 
     // variables
     public $var = array();
@@ -41,7 +41,7 @@ class Veins {
     /**
      * Plugin container
      *
-     * @var \Leaf\Veins\PluginContainer
+     * @var \Veins\Template\PluginContainer
      */
     protected static $plugins = null;
 
@@ -100,7 +100,7 @@ class Veins {
     /**
      * Draw a string
      *
-     * @param string $string: string in LeafVeins format
+     * @param string $string: string in VeinsVeins format
      * @param bool $toString: if the param
      *
      * @return void, string: depending of the $toString
@@ -133,7 +133,7 @@ class Veins {
      * @param string, array $setting: name of the setting to configure
      * or associative array type 'setting' => 'value'
      * @param mixed $value: value of the setting to configure
-     * @return \Leaf\Veins $this
+     * @return \Veins\Template $this
      */
     public function objectConfigure($setting, $value = null) {
         if (is_array($setting))
@@ -181,7 +181,7 @@ class Veins {
      * @param mixed $variable Name of template variable or associative array name/value
      * @param mixed $value value assigned to this variable. Not set if variable_name is an associative array
      *
-     * @return \Leaf\Veins $this
+     * @return \Veins\Template $this
      */
     public function assign($variable, $value = null) {
         if (is_array($variable))
@@ -197,7 +197,7 @@ class Veins {
      * @param type $expireTime Set the expiration time
      */
     public static function clean($expireTime = 2592000) {
-        $files = glob(static::$conf['cache_dir'] . "*.rtpl.php");
+        $files = glob(static::$conf['cache_dir'] . "*.veinstemplate.php");
         $time = time() - $expireTime;
         foreach ($files as $file)
             if ($time > filemtime($file) )
@@ -218,10 +218,10 @@ class Veins {
     /**
      * Registers a plugin globally.
      *
-     * @param \Leaf\Veins\IPlugin $plugin
+     * @param \Veins\Template\IPlugin $plugin
      * @param string $name name can be used to distinguish plugins of same class.
      */
-    public static function registerPlugin(Veins\IPlugin $plugin, $name = '') {
+    public static function registerPlugin(Template\IPlugin $plugin, $name = '') {
         $name = (string)$name ?: \get_class($plugin);
 
         static::getPlugins()->addPlugin($name, $plugin);
@@ -239,11 +239,11 @@ class Veins {
     /**
      * Returns plugin container.
      *
-     * @return \Leaf\Veins\PluginContainer
+     * @return \Veins\Template\PluginContainer
      */
     protected static function getPlugins() {
         return static::$plugins
-            ?: static::$plugins = new Veins\PluginContainer();
+            ?: static::$plugins = new Template\PluginContainer();
     }
 
     /**
@@ -251,7 +251,7 @@ class Veins {
      *
      * @param string $template: name of the file of the template
      *
-     * @throw \Leaf\Veins\NotFoundException the file doesn't exists
+     * @throw \Veins\Template\NotFoundException the file doesn't exists
      * @return string: full filepath that php must use to include
      */
     protected function checkTemplate($template) {
@@ -275,7 +275,7 @@ class Veins {
         if ($template[0] == '/') {
             $templateDirectory = $templateBasedir;
             $templateFilepath = $templateDirectory . $templateName . '.' . $this->config['veins_ext'];
-            $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.rtpl.php';
+            $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.veinstemplate.php';
             // For check templates are exists
             if (file_exists($templateFilepath)) {
                 $isFileNotExist = false;
@@ -284,7 +284,7 @@ class Veins {
             foreach($templateDirectories as $templateDirectory) {
                 $templateDirectory .= $templateBasedir;
                 $templateFilepath = $templateDirectory . $templateName . '.' . $this->config['veins_ext'];
-                $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.rtpl.php';
+                $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.veinstemplate.php';
 
                 // For check templates are exists
                 if (file_exists($templateFilepath)) {
@@ -296,13 +296,13 @@ class Veins {
 
         // if the template doesn't exsist throw an error
         if ($isFileNotExist === true) {
-            $e = new Veins\NotFoundException('Template ' . $templateName . ' not found!');
+            $e = new Template\NotFoundException('Template ' . $templateName . ' not found!');
             throw $e->templateFile($templateFilepath);
         }
 
         // Compile the template if the original has been updated
         if ($this->config['debug'] || !file_exists($parsedTemplateFilepath) || ( filemtime($parsedTemplateFilepath) < filemtime($templateFilepath) )) {
-            $parser = new Veins\Parser($this->config, static::$plugins, static::$registered_tags);
+            $parser = new Template\Parser($this->config, static::$plugins, static::$registered_tags);
             $parser->compileFile($templateName, $templateBasedir, $templateDirectory, $templateFilepath, $parsedTemplateFilepath);
         }
         return $parsedTemplateFilepath;
@@ -311,7 +311,7 @@ class Veins {
     /**
      * Compile a string if necessary
      *
-     * @param string $string: LeafVeins template string to compile
+     * @param string $string: VeinsVeins template string to compile
      *
      * @return string: full filepath that php must use to include
      */
@@ -319,14 +319,14 @@ class Veins {
 
         // set filename
         $templateName = md5($string . implode($this->config['checksum']));
-        $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . '.s.rtpl.php';
+        $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . '.s.veinstemplate.php';
         $templateFilepath = '';
         $templateBasedir = '';
 
 
         // Compile the template if the original has been updated
         if ($this->config['debug'] || !file_exists($parsedTemplateFilepath)) {
-            $parser = new Veins\Parser($this->config, static::$plugins, static::$registered_tags);
+            $parser = new Template\Parser($this->config, static::$plugins, static::$registered_tags);
             $parser->compileString($templateName, $templateBasedir, $templateFilepath, $parsedTemplateFilepath, $string);
         }
 
