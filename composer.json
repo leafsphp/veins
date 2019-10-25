@@ -20,8 +20,8 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": {
-            "Veins": "library/"
+        "psr-4": {
+            "Veins\\": "src/"
         }
     }
 }

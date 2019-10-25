@@ -1,5 +1,5 @@
 <?php
-require "Template.php";
+// require "Template.php";
 require "Template/IPlugin.php";
 require "Template/Exception.php";
 require "Template/NotFoundException.php";

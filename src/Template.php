@@ -25,6 +25,7 @@
 
 namespace Veins;
 
+require "init.php";
 /**
  *  LeafVeins
  *  --------
@@ -74,7 +75,7 @@ class Template {
      *
      * @return void, string: depending of the $toString
      */
-    public function draw($templateFilePath, $toString = FALSE) {
+    public function renderTemplate($templateFilePath, $toString = FALSE) {
         extract($this->var);
         // Merge local and static configurations
         $this->config = $this->objectConf + static::$conf;
