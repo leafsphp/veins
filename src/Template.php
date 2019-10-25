@@ -37,7 +37,7 @@ class Template {
     public $var = array();
 
     protected $config = array(),
-        $objectConf = array();
+    $objectConf = array();
 
     /**
      * Plugin container
@@ -51,7 +51,7 @@ class Template {
         'checksum' => array(),
         'charset' => 'UTF-8',
         'debug' => false,
-        'veins_dir' => 'views/',
+        'veins_dir' => 'templates/',
         'cache_dir' => 'cache/',
         'veins_ext' => 'vein',
         'base_url' => '',
@@ -67,7 +67,7 @@ class Template {
 
 
     /**
-     * Draw the template
+     * render the template
      *
      * @param string $templateFilePath: name of the template file
      * @param bool $toString: if the method should return a string
@@ -86,9 +86,9 @@ class Template {
 
         // Execute plugins, before_parse
         $context = $this->getPlugins()->createContext(array(
-                'code' => $html,
-                'conf' => $this->config,
-            ));
+            'code' => $html,
+            'conf' => $this->config,
+        ));
         $this->getPlugins()->run('afterDraw', $context);
         $html = $context->code;
 
@@ -101,7 +101,7 @@ class Template {
     /**
      * Draw a string
      *
-     * @param string $string: string in VeinsVeins format
+     * @param string $string: string in VeinsTemplate format
      * @param bool $toString: if the param
      *
      * @return void, string: depending of the $toString
@@ -198,7 +198,7 @@ class Template {
      * @param type $expireTime Set the expiration time
      */
     public static function clean($expireTime = 2592000) {
-        $files = glob(static::$conf['cache_dir'] . "*.veinstemplate.php");
+        $files = glob(static::$conf['cache_dir'] . "*.vein.php");
         $time = time() - $expireTime;
         foreach ($files as $file)
             if ($time > filemtime($file) )
@@ -276,7 +276,7 @@ class Template {
         if ($template[0] == '/') {
             $templateDirectory = $templateBasedir;
             $templateFilepath = $templateDirectory . $templateName . '.' . $this->config['veins_ext'];
-            $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.veinstemplate.php';
+            $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.vein.php';
             // For check templates are exists
             if (file_exists($templateFilepath)) {
                 $isFileNotExist = false;
@@ -285,7 +285,7 @@ class Template {
             foreach($templateDirectories as $templateDirectory) {
                 $templateDirectory .= $templateBasedir;
                 $templateFilepath = $templateDirectory . $templateName . '.' . $this->config['veins_ext'];
-                $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.veinstemplate.php';
+                $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize($this->config['checksum'])) . '.vein.php';
 
                 // For check templates are exists
                 if (file_exists($templateFilepath)) {
@@ -320,7 +320,7 @@ class Template {
 
         // set filename
         $templateName = md5($string . implode($this->config['checksum']));
-        $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . '.s.veinstemplate.php';
+        $parsedTemplateFilepath = $this->config['cache_dir'] . $templateName . '.s.vein.php';
         $templateFilepath = '';
         $templateBasedir = '';
 

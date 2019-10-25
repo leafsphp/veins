@@ -61,6 +61,13 @@ class Parser {
         'loop_close' => array('({\/loop})', '/{\/loop}/'),
         'loop_break' => array('({break})', '/{break}/'),
         'loop_continue' => array('({continue})', '/{continue}/'),
+        'foreach' => array(
+            '({foreach.*?})',
+            '/{foreach="(?<variable>\${0,1}[^"]*)"(?: as (?<key>\$.*?)(?: => (?<value>\$.*?)){0,1}){0,1}}/'
+        ),
+        'foreach_close' => array('({\/foreach})', '/{\/foreach}/'),
+        'foreach_break' => array('({break})', '/{break}/'),
+        'foreach_continue' => array('({continue})', '/{continue}/'),
         'if' => array('({if.*?})', '/{if="([^"]*)"}/'),
         'elseif' => array('({elseif.*?})', '/{elseif="([^"]*)"}/'),
         'else' => array('({else})', '/{else}/'),
@@ -385,6 +392,8 @@ class Parser {
                     $parsedCode .= "<?php $counter=-1; $assignNewVar if( isset($newvar) && ( is_array($newvar) || $newvar instanceof Traversable ) && sizeof($newvar) ) foreach( $newvar as $key => $value ){ $counter++; ?>";
                 }
 
+                
+
                 //close loop tag
                 elseif (preg_match($tagMatch['loop_close'], $html)) {
 
@@ -407,6 +416,72 @@ class Parser {
                 //continue loop tag
                 elseif (preg_match($tagMatch['loop_continue'], $html)) {
                     //close loop code
+                    $parsedCode .= "<?php continue; ?>";
+                }
+
+                //loop
+                elseif (preg_match($tagMatch['foreach'], $html, $matches)) {
+
+                    // increase the foreach counter
+                    $loopLevel++;
+
+                    //replace the variable in the foreach
+                    $var = $this->varReplace($matches['variable'], $loopLevel - 1, $escape = FALSE);
+                    if (preg_match('#\(#', $var)) {
+                        $newvar = "\$newvar{$loopLevel}";
+                        $assignNewVar = "$newvar=$var;";
+                    } else {
+                        $newvar = $var;
+                        $assignNewVar = null;
+                    }
+
+                    // check black list
+                    $this->blackList($var);
+
+                    //foreach variables
+                    $counter = "\$counter$loopLevel";       // count iteration
+
+                    if (isset($matches['key']) && isset($matches['value'])) {
+                        $key = $matches['key'];
+                        $value = $matches['value'];
+                    } elseif (isset($matches['key'])) {
+                        $key = "\$key$loopLevel";               // key
+                        $value = $matches['key'];
+                    } else {
+                        $key = "\$key$loopLevel";               // key
+                        $value = "\$value$loopLevel";           // value
+                    }
+
+
+
+                    //foreach code
+                    $parsedCode .= "<?php $counter=-1; $assignNewVar if( isset($newvar) && ( is_array($newvar) || $newvar instanceof Traversable ) && sizeof($newvar) ) foreach( $newvar as $key => $value ){ $counter++; ?>";
+                }
+
+                
+
+                //close foreach tag
+                elseif (preg_match($tagMatch['foreach_close'], $html)) {
+
+                    //iterator
+                    $counter = "\$counter$loopLevel";
+
+                    //decrease the foreach counter
+                    $loopLevel--;
+
+                    //close foreach code
+                    $parsedCode .= "<?php } ?>";
+                }
+
+                //break foreach tag
+                elseif (preg_match($tagMatch['foreach_break'], $html)) {
+                    //close foreach code
+                    $parsedCode .= "<?php break; ?>";
+                }
+
+                //continue foreach tag
+                elseif (preg_match($tagMatch['foreach_continue'], $html)) {
+                    //close foreach code
                     $parsedCode .= "<?php continue; ?>";
                 }
 
