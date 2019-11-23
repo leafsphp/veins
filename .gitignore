@@ -1,6 +1,7 @@
 .DS_Store
 nbproject
-vendor/*
-cache/*
+vendor
+cache
 views
 veins.php
+ideas
