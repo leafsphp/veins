@@ -23,55 +23,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Veins\Template;
+namespace Leaf\Veins\Template;
 
 /**
- * Exception thrown when syntax error occurs.
+ * Basic Veins template exception.
  */
-class SyntaxException extends Exception {
+class Exception extends \Exception {
 
     /**
-     * Line in template file where error has occured.
-     *
-     * @var int | null
+     * Path of template file with error.
      */
-    protected $templateLine = null;
+    protected $templateFile = '';
 
     /**
-     * Tag which caused an error.
+     * Handles path of template file with error.
      *
-     * @var string | null
+     * @param string | null $templateFile
+     * @return \Leaf\Veins\Template_Exception | string
      */
-    protected $tag = null;
+    public function templateFile($templateFile){
+        if(is_null($templateFile))
+            return $this->templateFile;
 
-    /**
-     * Handles the line in template file
-     * where error has occured
-     *
-     * @param int | null $line
-     *
-     * @return \Veins\Template\SyntaxException | int | null
-     */
-    public function templateLine($line){
-        if(is_null($line))
-            return $this->templateLine;
-
-        $this->templateLine = (int) $line;
-        return $this;
-    }
-
-    /**
-     * Handles the tag which caused an error.
-     *
-     * @param string | null $tag
-     *
-     * @return \Veins\Template_SyntaxException | string | null
-     */
-    public function tag($tag=null){
-        if(is_null($tag))
-            return $this->tag;
-
-        $this->tag = (string) $tag;
+        $this->templateFile = (string) $templateFile;
         return $this;
     }
 }

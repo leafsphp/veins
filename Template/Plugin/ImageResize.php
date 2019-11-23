@@ -23,10 +23,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Veins\Template\Plugin;
+namespace Leaf\Veins\Template\Plugin;
+
 require_once __DIR__ . '/../Plugin.php';
 
-class ImageResize extends \Veins\Template\Plugin{
+class ImageResize extends \Leaf\Veins\Template\Plugin{
 
     protected $hooks = array('beforeParse');
     protected $quality = 80;
@@ -69,7 +70,7 @@ class ImageResize extends \Veins\Template\Plugin{
 
                 if( $w > 0 && $h > 0 && $resize != 'false' ){
                     echo $src;exit;
-                    $new_tag = preg_replace( '/(.*?)src="(.*?)"(.*?)/', '$1src="<?php echo Veins\Template\Plugin\ImageResize::imgResize(\''.$src.'\', \''.$img_cache_dir.'\', \''.$w.'\', \''.$h.'\', \''.$quality.'\', \''.$crop.'\' ); ?>"$3', $tag );
+                    $new_tag = preg_replace( '/(.*?)src="(.*?)"(.*?)/', '$1src="<?php echo Leaf\Veins\Template\Plugin\ImageResize::imgResize(\''.$src.'\', \''.$img_cache_dir.'\', \''.$w.'\', \''.$h.'\', \''.$quality.'\', \''.$crop.'\' ); ?>"$3', $tag );
                     $html = str_replace( $tag, $new_tag, $html );
                     $image_resized = true;
                 }

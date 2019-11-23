@@ -23,7 +23,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Veins\Template;
+namespace Leaf\Veins\Template;
 
 /**
  *  LeafVeins
@@ -42,7 +42,7 @@ class Parser {
     /**
      * Plugin container
      *
-     * @var \Veins\Template\PluginContainer
+     * @var \Leaf\Veins\Template\PluginContainer
      */
     protected static $plugins = null;
 
@@ -116,7 +116,7 @@ class Parser {
     /**
      * Returns plugin container.
      *
-     * @return \Veins\Template\PluginContainer
+     * @return \Leaf\Veins\Template\PluginContainer
      */
     protected static function getPlugins() {
         return static::$plugins
@@ -165,7 +165,7 @@ class Parser {
                 }, $code);
 
             $parsedCode = $this->compileTemplate($code, $isString = false, $templateBasedir, $templateDirectory, $templateFilepath);
-            $parsedCode = "<?php if(!class_exists('Veins\Template')){exit;}?>" . $parsedCode;
+            $parsedCode = "<?php if(!class_exists('Leaf\Veins\Template')){exit;}?>" . $parsedCode;
 
             // fix the php-eating-newline-after-closing-tag-problem
             $parsedCode = str_replace("?>\n", "?>\n\n", $parsedCode);
@@ -220,7 +220,7 @@ class Parser {
 
             $parsedCode = $this->compileTemplate($code, $isString = true, $templateBasedir, $templateDirectory = null, $templateFilepath);
 
-            $parsedCode = "<?php if(!class_exists('Veins\Template')){exit;}?>" . $parsedCode;
+            $parsedCode = "<?php if(!class_exists('Leaf\Veins\Template')){exit;}?>" . $parsedCode;
 
             // fix the php-eating-newline-after-closing-tag-problem
             $parsedCode = str_replace("?>\n", "?>\n\n", $parsedCode);
@@ -392,7 +392,7 @@ class Parser {
                     $parsedCode .= "<?php $counter=-1; $assignNewVar if( isset($newvar) && ( is_array($newvar) || $newvar instanceof Traversable ) && sizeof($newvar) ) foreach( $newvar as $key => $value ){ $counter++; ?>";
                 }
 
-                
+
 
                 //close loop tag
                 elseif (preg_match($tagMatch['loop_close'], $html)) {
@@ -458,7 +458,7 @@ class Parser {
                     $parsedCode .= "<?php $counter=-1; $assignNewVar if( isset($newvar) && ( is_array($newvar) || $newvar instanceof Traversable ) && sizeof($newvar) ) foreach( $newvar as $key => $value ){ $counter++; ?>";
                 }
 
-                
+
 
                 //close foreach tag
                 elseif (preg_match($tagMatch['foreach_close'], $html)) {
