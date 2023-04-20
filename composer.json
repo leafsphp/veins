@@ -1,0 +1,37 @@
+{
+	"name": "leafs/veins",
+	"description": "Veins templating engine for the Leaf PHP framework",
+	"keywords": [
+		"templating",
+		"ui",
+		"frontend",
+        "php"
+	],
+	"homepage": "https://leafphp.dev/modules/views/veins/",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Michael Darko",
+			"email": "mickdd22@gmail.com",
+			"homepage": "https://github.com/mychidarko",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Leaf\\": "src"
+		},
+		"files": [
+			"src/functions.php"
+		]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"leafs/http": "*"
+	},
+	"scripts": {
+        "format": "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
+    }
+}

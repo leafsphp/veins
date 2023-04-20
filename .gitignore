@@ -1,10 +1,19 @@
-.DS_Store
-nbproject
-vendor
-cache
-views
-veins.php
-ideas
-ideaForComponent.md
-component
+# Global
+.phpunit*
+.composer
+composer.lock
+package-lock.json
+.phpunit.result.cache
+.php-cs-fixer.cache
+vendor/
 test/
+
+# OS Generated
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.swp
+
+# phpstorm
+.idea/*
