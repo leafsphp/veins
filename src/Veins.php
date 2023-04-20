@@ -8,7 +8,7 @@ use Leaf\Veins\Parser;
  * Leaf Veins
  * ---
  * Simple, fast and powerful PHP template engine.
- * 
+ *
  * @package Leaf\Veins
  * @version 2.0.0
  * @since 1.0.0
