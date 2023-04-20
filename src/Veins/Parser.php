@@ -80,8 +80,8 @@ class Parser
 
     public static function checkTemplate(array $config, string $template)
     {
-        if (strpos($template, '.vein.php') === false) {
-            $template .= '.vein.php';
+        if (strpos($template, '.vein.html') === false) {
+            $template .= '.vein.html';
         }
 
         $template = $config['templateDir'] . $template;
@@ -90,7 +90,7 @@ class Parser
             throw new \Exception("Template file not found: {$template}");
         }
 
-        $parsedTemplate = $config['cacheDir'] . md5($template . serialize($config['checksum'])) . '.vein.php';
+        $parsedTemplate = $config['cacheDir'] . md5($template . serialize($config['checksum'])) . '.vein.html';
 
         if (
             $config['debug'] ||
