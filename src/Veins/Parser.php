@@ -170,8 +170,8 @@ class Parser
                 elseif (preg_match($tagMatch['include'], $html, $matches)) {
 
                     //get the folder of the actual template
-                    if (substr($templateDir, 0, strlen($this->config['veins_dir'])) == $this->config['veins_dir']) {
-                        $templateDir = substr($templateDir, strlen($this->config['veins_dir']));
+                    if (substr($templateDir, 0, strlen($this->config['templateDir'])) == $this->config['templateDir']) {
+                        $templateDir = substr($templateDir, strlen($this->config['templateDir']));
                     }
 
                     //get the included template
