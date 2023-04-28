@@ -13,6 +13,7 @@ class Parser
      * Leaf Veins config
      */
     protected $config = [];
+    public static $configuration = [];
 
     /**
      * Built in tags
@@ -78,8 +79,12 @@ class Parser
         $this->config = $config;
     }
 
-    public static function checkTemplate(array $config, string $template)
+    public static function checkTemplate($config, string $template)
     {
+        if (is_string($config)) {
+            $config = json_decode($config, true);
+        }
+
         if (strpos($template, '.vein.html') === false) {
             $template .= '.vein.html';
         }
@@ -99,13 +104,13 @@ class Parser
         ) {
             $parser = new self($config);
 
-            return $parser->parse($template, $parsedTemplate);
+            return $parser->parse($template, $parsedTemplate, $config);
         }
 
         return $parsedTemplate;
     }
 
-    public function parse(string $template, string $parsedTemplate): string
+    public function parse(string $template, string $parsedTemplate, array $config): string
     {
         $template = file_get_contents($template);
         $templateDir = dirname($template);
@@ -117,26 +122,24 @@ class Parser
         }
 
         $keys = array_keys($this->config['customTags']);
-        $tagSplit += array_merge($tagSplit, $keys);
+        $tagSplit = array_merge($tagSplit, $keys);
 
         if ($this->config['removeComments']) {
             $template = preg_replace('/<!--(.*)-->/Uis', '', $template);
         }
 
-        //split the code with the tags regexp
+        // split the code with the tags regexp
         $codeSplit = preg_split("/" . implode("|", $tagSplit) . "/", $template, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
-        //variables initialization
+        // variables initialization
         $parsedCode = $commentIsOpen = $ignoreIsOpen = null;
         $openIf = $loopLevel = 0;
 
         // if the template is not empty
         if ($codeSplit) {
-
-            //read all parsed code
+            // read all parsed code
             foreach ($codeSplit as $html) {
-
-                //close ignore tag
+                // close ignore tag
                 if (!$commentIsOpen && preg_match($tagMatch['ignore_close'], $html)) {
                     $ignoreIsOpen = false;
                 }
@@ -168,29 +171,17 @@ class Parser
 
                 //include tag
                 elseif (preg_match($tagMatch['include'], $html, $matches)) {
-
-                    //get the folder of the actual template
-                    if (substr($templateDir, 0, strlen($this->config['templateDir'])) == $this->config['templateDir']) {
-                        $templateDir = substr($templateDir, strlen($this->config['templateDir']));
-                    }
-
-                    //get the included template
+                    // get the included template
                     if (strpos($matches[1], '$') !== false) {
-                        $includeTemplate = "'$templateDir'." . $this->varReplace($matches[1], $loopLevel);
+                        $includeTemplate = $this->varReplace($matches[1], $loopLevel);
                     } else {
-                        $includeTemplate = $templateDir . $this->varReplace($matches[1], $loopLevel);
+                        $includeTemplate = $this->varReplace($matches[1], $loopLevel);
                     }
 
                     // reduce the path
                     $includeTemplate = Parser::reducePath($includeTemplate);
 
-                    if (strpos($matches[1], '$') !== false) {
-                        //dynamic include
-                        $parsedCode .= '<?php require $this->checkTemplate(' . $includeTemplate . ');?>';
-                    } else {
-                        //dynamic include
-                        $parsedCode .= '<?php require $this->checkTemplate("' . $includeTemplate . '");?>';
-                    }
+                    $parsedCode .= '<?php require \Leaf\Veins\Parser::checkTemplate("' . str_replace('"', '\"', json_encode($config)) . '", "' . $includeTemplate . '");?>';
                 }
 
                 //loop
